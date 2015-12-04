@@ -2,8 +2,8 @@ Basic Shiny application for use on Sage Bionetwork's Synapse web portal.
 
 ## Credits
 
-- Author: @duncan-palmer
-- Contributors: @kdaily
+- Author: [duncan-palmer](https://github.com/duncan-palmer)
+- Contributors: [kdaily](https://github.com/kdaily)
 
 ## Introduction
 
