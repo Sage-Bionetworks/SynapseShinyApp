@@ -10,6 +10,7 @@
 # https://www.synapse.org
 
 library(shiny)
+library(synapseClient)
 
 shinyServer(function(input, output, session) {
 
