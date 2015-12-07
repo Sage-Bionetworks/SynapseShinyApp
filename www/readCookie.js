@@ -1,10 +1,10 @@
 // read the user login token from a cookie
 Shiny.addCustomMessageHandler("readCookie", function(message) {
-    var cookie = readCookie(message.name);
+    var cookie = readCookie();
     Shiny.onInputChange("cookie",cookie);
-})
+});
 
-function readCookie(name) {
+function readCookie() {
 	name = "org.sagebionetworks.security.user.login.token";
 	var nameEQ = name + "=";
 	var ca = document.cookie.split(';');
