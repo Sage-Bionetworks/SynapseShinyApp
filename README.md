@@ -17,7 +17,7 @@ To create a new Shiny application based on this structure, do *not* fork this re
  
 ### Creating a New Shiny App Repository
 
-1.  Go to [GitHub's importer](http://import.github.com/new?import_url=https://github.com/Sage-Bionetworks/SynapseShinyApp).
+1.  Go to [GitHub's importer](http://import.github.com/new?import_url=https://github.com/Sage-Bionetworks/SynapseShinyApp.git) and paste in this repository's clone URL (https://github.com/Sage-Bionetworks/SynapseShinyApp.git).
 1.  Click on "Check the URL".  (GitHub won't import until you've done this.)
 1.  Select the owner for your repository (This will probably be you, but may instead be an organization you belong to).
 1.  Choose a name for your repository.
