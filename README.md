@@ -1,3 +1,5 @@
+> # This branch uses the `synapser` R package.
+
 Basic Shiny application for use on Sage Bionetwork's Synapse web portal.
 
 ## Credits

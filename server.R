@@ -10,7 +10,7 @@
 # https://www.synapse.org
 
 library(shiny)
-library(synapseClient)
+library(synapser)
 
 shinyServer(function(input, output, session) {
 
@@ -19,7 +19,7 @@ shinyServer(function(input, output, session) {
   
   foo <- observeEvent(input$cookie, {
     
-    synapseLogin(sessionToken=input$cookie)
+    synLogin(sessionToken=input$cookie)
     
     output$title <- renderUI({
       titlePanel(sprintf("Welcome, %s", synGetUserProfile()@userName))
