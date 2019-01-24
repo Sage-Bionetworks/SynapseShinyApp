@@ -17,7 +17,7 @@ shinyServer(function(input, output, session) {
   foo <- observe({
     
     r <- httr::GET("https://staging.synapse.org/Portal/sessioncookie")
-    
+    message(sprintf("Status code = %s", r$status_code))
     if (r$status_code == 200) {
       synapseLogin(sessionToken=r$content)
     }
