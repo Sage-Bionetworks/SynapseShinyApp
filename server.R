@@ -13,14 +13,13 @@ library(shiny)
 library(synapseClient)
 
 shinyServer(function(input, output, session) {
-
-  foo <- observe({
+  
+  session$sendCustomMessage(type="readCookie",
+                            message=list(name='org.sagebionetworks.security.user.login.token'))
+  
+  foo <- observeEvent(input$cookie, {
     
-    r <- httr::GET("https://staging.synapse.org/Portal/sessioncookie")
-    message(sprintf("Status code = %s", r$status_code))
-    if (r$status_code == 200) {
-      synapseLogin(sessionToken=r$content)
-    }
+    synapseLogin(sessionToken=input$cookie)
     
     output$title <- renderUI({
       titlePanel(sprintf("Welcome, %s", synGetUserProfile()@userName))
