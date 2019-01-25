@@ -12,6 +12,9 @@
 library(shiny)
 library(synapser)
 
+# For testing against staging
+PythonEmbedInR::pyExec("syn.setEndpoints(**synapseclient.client.STAGING_ENDPOINTS)")
+
 shinyServer(function(input, output, session) {
   
   session$sendCustomMessage(type="readCookie",
