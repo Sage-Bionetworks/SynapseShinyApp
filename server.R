@@ -10,19 +10,21 @@
 # https://www.synapse.org
 
 library(shiny)
-library(synapseClient)
+library(synapser)
+
+# For testing against staging
+PythonEmbedInR::pyExec("syn.setEndpoints(**synapseclient.client.STAGING_ENDPOINTS)")
 
 shinyServer(function(input, output, session) {
-
-  session$sendCustomMessage(type="readCookie",
-                            message=list(name='org.sagebionetworks.security.user.login.token'))
+  
+  session$sendCustomMessage(type="readCookie", message=list())
   
   foo <- observeEvent(input$cookie, {
     
-    synapseLogin(sessionToken=input$cookie)
+    synLogin(sessionToken=input$cookie)
     
     output$title <- renderUI({
-      titlePanel(sprintf("Welcome, %s", synGetUserProfile()@userName))
+      titlePanel(sprintf("Welcome, %s", synGetUserProfile()$userName))
     })
     
     output$distPlot <- renderPlot({
