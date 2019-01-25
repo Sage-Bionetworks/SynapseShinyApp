@@ -12,10 +12,12 @@
 library(shiny)
 library(synapser)
 
+# For testing against staging
+PythonEmbedInR::pyExec("syn.setEndpoints(**synapseclient.client.STAGING_ENDPOINTS)")
+
 shinyServer(function(input, output, session) {
   
-  session$sendCustomMessage(type="readCookie",
-                            message=list(name='org.sagebionetworks.security.user.login.token'))
+  session$sendCustomMessage(type="readCookie")
   
   foo <- observeEvent(input$cookie, {
     
