@@ -1,14 +1,17 @@
 // read the user login token from a cookie
 Shiny.addCustomMessageHandler("readCookie", function(message) {
-    var cookie = readCookie();
-    Shiny.onInputChange("cookie",cookie);
+    readCookie();
 });
 
 function readCookie() {
-  const Http = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   const url='https://staging.synapse.org/Portal/sessioncookie';
-  Http.withCredentials = true;
-  Http.open("GET", url);
-  Http.send();
-  Http.onreadystatechange=(e)=>{return(Http.responseText)};
+  xhr.withCredentials = true;
+  xhr.onreadystatechange = function() {
+     if (xhr.readyState == XMLHttpRequest.DONE) {
+         Shiny.onInputChange("cookie",xhr.responseText);
+     }
+  }
+  xhr.open("GET", url);
+  xhr.send();
 }
