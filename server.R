@@ -17,7 +17,7 @@ PythonEmbedInR::pyExec("syn.setEndpoints(**synapseclient.client.STAGING_ENDPOINT
 
 shinyServer(function(input, output, session) {
   
-  session$sendCustomMessage(type="readCookie")
+  session$sendCustomMessage(type="readCookie", message=list())
   
   foo <- observeEvent(input$cookie, {
     
