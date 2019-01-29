@@ -26,7 +26,8 @@ You can now click "Begin Import". When the process is done, you can click "Conti
 ### Notes
 
 If you are using a `navbarPage` instead of a `fluidPage` in your `ui.R`, use of this code: 
-```tags$head(
+```
+tags$head(
     singleton(
       includeScript("www/readCookie.js")
     )
