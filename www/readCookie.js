@@ -5,7 +5,7 @@ Shiny.addCustomMessageHandler("readCookie", function(message) {
 
 function readCookie() {
   const xhr = new XMLHttpRequest();
-  const url='https://staging.synapse.org/Portal/sessioncookie';
+  const url='https://www.synapse.org/Portal/sessioncookie';
   xhr.withCredentials = true;
   xhr.onreadystatechange = function() {
      if (xhr.readyState == XMLHttpRequest.DONE) {
