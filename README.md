@@ -22,3 +22,18 @@ To create a new Shiny application based on this structure, do *not* fork this re
 1.  Select the owner for your repository (This will probably be you, but may instead be an organization you belong to).
 
 You can now click "Begin Import". When the process is done, you can click "Continue to repository" to visit your newly-created repository.
+
+### Notes
+
+If you are using a `navbarPage` instead of a `fluidPage` in your `ui.R`, use of this code: 
+```
+tags$head(
+    singleton(
+      includeScript("www/readCookie.js")
+    )
+  ),
+``` 
+will cause create a default ghost tab. Instead, you should replace the above code with this snippet: 
+```
+header=list(tags$head(includeScript("www/readCookie.js"))),
+```
