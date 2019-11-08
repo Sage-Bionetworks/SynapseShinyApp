@@ -11,7 +11,7 @@ Shiny applications are a powerful way to develop interactive data visualization 
 
 This solution allows to determine which user is currently logged into Synapse through the web browser. These credentials are passed on to the Shiny app, and that specific user is logged in. Subsequent interactions with Synapse to pull data for the Shiny interface then happens as that user.
 
-:warning:**HOWEVER**:warning: synapser stores authentication information in a
+:warning:**HOWEVER**:warning: The Synapse R client, [synapser](https://r-docs.synapse.org/), stores authentication information in a
 location that is global to the R process. This means that if one user connects
 to a Shiny app, and then another user connects on another machine, the second
 user's authentication will supersede the first's. This can cause
