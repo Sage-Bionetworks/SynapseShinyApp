@@ -13,7 +13,7 @@ This solution allows to determine which user is currently logged into Synapse th
 
 :warning:**HOWEVER**:warning: The Synapse R client, [synapser](https://r-docs.synapse.org/), stores authentication information in a
 location that is global to the R process. This means that if one user connects
-to a Shiny app, and then another user connects on another machine, the second
+to a Shiny app, and then another user connects from another browser or computer, the second
 user's authentication will supersede the first's. This can cause
 hard-to-diagnose errors, and is a security issue. There are 3 ways to work
 around this issue:
