@@ -11,6 +11,34 @@ Shiny applications are a powerful way to develop interactive data visualization 
 
 This solution allows to determine which user is currently logged into Synapse through the web browser. These credentials are passed on to the Shiny app, and that specific user is logged in. Subsequent interactions with Synapse to pull data for the Shiny interface then happens as that user.
 
+:warning:**HOWEVER**:warning: The Synapse R client, [synapser](https://r-docs.synapse.org/), stores authentication information in a
+location that is global to the R process. This means that if one user connects
+to a Shiny app, and then another user connects from another browser or computer, the second
+user's authentication will supersede the first's. This can cause
+hard-to-diagnose errors, and is a security issue. There are 3 ways to work
+around this issue:
+
+1. Ensure that each user gets a separate R process by customizing the
+   [utilization scheduler](https://support.rstudio.com/hc/en-us/articles/220546267-Scaling-and-Performance-Tuning-Applications-in-Shiny-Server-Pro)
+   (only available for Shiny Server Pro).
+1. Write your app so that it logs in before doing any operation that interacts
+   with Synapse. Essentially this means writing wrappers for every synapser
+   function you use, e.g.:
+    
+   ```r
+   authSynGet <- function(...) {
+     synLogin(sessionToken = input$cookie)
+     synGet(...)
+   }
+   ```
+   
+   Placing a call to `synLogin()` before `synGet()` directly in your server
+   function is not necessarily sufficient, as it is still possible someone else
+   could log in between when your `synLogin()` and `synGet()` are executed.
+1. Instead of using synapser, use the [Synapse Python client](https://python-docs.synapse.org/) + [reticulate](https://rstudio.github.io/reticulate/). The
+   Python client allows for creating multiple client objects, and therefore
+   multiple authenticated users.
+
 ## Usage
 
 To create a new Shiny application based on this structure, do *not* fork this repository directly on GitHub. Instead, please use GitHub's importer following the instructions [below](#creating-a-repository).
