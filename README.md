@@ -35,7 +35,7 @@ around this issue:
    Placing a call to `synLogin()` before `synGet()` directly in your server
    function is not necessarily sufficient, as it is still possible someone else
    could log in between when your `synLogin()` and `synGet()` are executed.
-1. Instead of using synapser, use the Synapse Python client + reticulate. The
+1. Instead of using synapser, use the [Synapse Python client](https://python-docs.synapse.org/) + [reticulate](https://rstudio.github.io/reticulate/). The
    Python client allows for creating multiple client objects, and therefore
    multiple authenticated users.
 
