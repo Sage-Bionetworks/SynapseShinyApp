@@ -10,10 +10,13 @@
 # https://www.synapse.org
 
 library(shiny)
-library(synapser)
+library(reticulate)
+
+synapseclient <- import('synapseclient')
 
 shinyServer(function(input, output, session) {
-  
+  syn <- synapseclient$Synapse()
+
   session$sendCustomMessage(type="readCookie", message=list())
 
   ## Show message if user is not logged in to synapse
@@ -25,24 +28,24 @@ shinyServer(function(input, output, session) {
       )
     )
   })
-  
+
   foo <- observeEvent(input$cookie, {
-    
-    synLogin(sessionToken=input$cookie)
-    
+
+    syn$login(sessionToken=input$cookie)
+
     output$title <- renderUI({
       titlePanel(sprintf("Welcome, %s", synGetUserProfile()$userName))
     })
-    
+
     output$distPlot <- renderPlot({
-      
+
       # generate bins based on input$bins from ui.R
       x    <- faithful[, 2]
       bins <- seq(min(x), max(x), length.out = input$bins + 1)
-      
+
       # draw the histogram with the specified number of bins
       hist(x, breaks = bins, col = 'darkgray', border = 'white')
-      
+
     })
-  })    
+  })
 })

@@ -1,67 +1,53 @@
+**This branch is meant to live separately to illustrate the reticulate alternative. It should not be merged**
+
 Basic Shiny application for use on Sage Bionetwork's Synapse web portal.
 
-## Credits
+This variation of SynapseShinyApp accesses Synapse using the [reticulate](https://rstudio.github.io/reticulate/) library in conjunction with the Python [synapseclient](https://github.com/Sage-Bionetworks/synapsePythonClient) as an alternative to using the [synapser](https://github.com/Sage-Bionetworks/synapser) R package.
 
-- Author: [duncan-palmer](https://github.com/duncan-palmer)
-- Contributors: [kdaily](https://github.com/kdaily)
+Please first see the [master](https://github.com/Sage-Bionetworks/SynapseShinyApp/tree/master) branch of this repository for an initial understanding of how the base version of this application works with synapser as that will help illustrate the differences when using reticulate and the Python synapseclient instead.
 
-## Introduction
+## Setup
 
-Shiny applications are a powerful way to develop interactive data visualization and manipulation interfaces. However, when using with Synapse, user authentication is an issue - whomever the Shiny application is running as will determine the access that users visiting the application will have.
+### Python
 
-This solution allows to determine which user is currently logged into Synapse through the web browser. These credentials are passed on to the Shiny app, and that specific user is logged in. Subsequent interactions with Synapse to pull data for the Shiny interface then happens as that user.
+synapseclient requires a Python installation of > 3.6, and reticulate additionally requires that the python installation have been built with the **--enabled-shared** option. If you already have python installed, you can check its suitability by running e.g. the following command.
 
-:warning:**HOWEVER**:warning: The Synapse R client, [synapser](https://r-docs.synapse.org/), stores authentication information in a
-location that is global to the R process. This means that if one user connects
-to a Shiny app, and then another user connects from another browser or computer, the second
-user's authentication will supersede the first's. This can cause
-hard-to-diagnose errors, and is a security issue. There are 3 ways to work
-around this issue:
-
-1. Ensure that each user gets a separate R process by customizing the
-   [utilization scheduler](https://support.rstudio.com/hc/en-us/articles/220546267-Scaling-and-Performance-Tuning-Applications-in-Shiny-Server-Pro)
-   (only available for Shiny Server Pro).
-1. Write your app so that it logs in before doing any operation that interacts
-   with Synapse. Essentially this means writing wrappers for every synapser
-   function you use, e.g.:
-    
-   ```r
-   authSynGet <- function(...) {
-     synLogin(sessionToken = input$cookie)
-     synGet(...)
-   }
-   ```
-   
-   Placing a call to `synLogin()` before `synGet()` directly in your server
-   function is not necessarily sufficient, as it is still possible someone else
-   could log in between when your `synLogin()` and `synGet()` are executed.
-1. Instead of using synapser, use the [Synapse Python client](https://python-docs.synapse.org/) + [reticulate](https://rstudio.github.io/reticulate/). The
-   Python client allows for creating multiple client objects, and therefore
-   multiple authenticated users.
-
-## Usage
-
-To create a new Shiny application based on this structure, do *not* fork this repository directly on GitHub. Instead, please use GitHub's importer following the instructions [below](#creating-a-repository).
- 
-### Creating a New Shiny App Repository
-
-1.  Go to [GitHub's importer](http://import.github.com/new?import_url=https://github.com/Sage-Bionetworks/SynapseShinyApp.git) and paste in this repository's clone URL (https://github.com/Sage-Bionetworks/SynapseShinyApp.git).
-1.  Choose a name for your repository.
-1.  Select the owner for your repository (This will probably be you, but may instead be an organization you belong to).
-
-You can now click "Begin Import". When the process is done, you can click "Continue to repository" to visit your newly-created repository.
-
-### Notes
-
-If you are using a `navbarPage` instead of a `fluidPage` in your `ui.R`, use of this code: 
 ```
-tags$head(
-    singleton(
-      includeScript("www/readCookie.js")
-    )
-  ),
-``` 
-will cause create a default ghost tab. Instead, you should replace the above code with this snippet: 
+python3 -c "import platform; import sysconfig; print(platform.python_version()); print(sysconfig.get_config_vars('Py_ENABLE_SHARED'))"
 ```
-header=list(tags$head(includeScript("www/readCookie.js"))),
+
+The output of running this command should be a version on the first line and a number on the second [0] or [1] indicating that Python was compiled with the necessary support needed by reticulate, e.g.
+
 ```
+3.8.2
+[1]
+```
+
+If the output of the above indicates you have a Python version > 3.6 and shows [1], then you have a suitable Python available for running reticulate and can move to the next section.
+
+If you received an error running the command, the version was < 3.6, or you received [0], then a different installation of Python is necessary to run reticulate. If that is the case, one way of making a new Python installation available is using [pyenv](https://github.com/pyenv/pyenv#installation).
+
+With pyenv installed, you can install a reticulate suitable Python with e.g. the following:
+```
+env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.8.2
+```
+
+Then configure the local repository directory to use the  new version e.g.:
+```
+# from the SynapseShinyApp repository directory
+pyenv local 3.8.2
+```
+
+### Python dependencies
+
+Once you have a suitable Python installation, it's necessary to install the Python dependencies and point reticulate at your Python installation. One way to do this is running the included **init_python_venv.sh** shell script, e.g.:
+
+```
+source ./init_python_venv.sh
+```
+
+Alternatively you can individually run the commands in the above file if you are not running in a bash compatible shell.
+
+## Authentication
+
+In the reticulate variation of the application login is via a Synapse object instantiated within the scope of the Shiny session. This contrasts with the **synapser** version of application, where the shared global Synapse client necessitates other workarounds to avoiding shared login state.
