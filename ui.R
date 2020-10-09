@@ -10,6 +10,7 @@
 # https://www.synapse.org
 
 library(shiny)
+library(waiter)
 
 shinyUI(fluidPage(
 
