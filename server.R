@@ -33,7 +33,6 @@ shinyServer(function(input, output, session) {
       Sys.sleep(2)
       waiter_hide()
     }, error = function(err) {
-      print(err)
       Sys.sleep(2)
       waiter_update(
         html = tagList(
