@@ -3,7 +3,7 @@ Basic Shiny application for use on Sage Bionetwork's Synapse web portal.
 ## Credits
 
 - Maintainer: [thomasyu888](https://github.com/thomasyu888)
-- Contributors: [allaway](https://github.com/allaway), [duncan-palmer](https://github.com/duncan-palmer), [jkiang13](https://github.com/jkiang13), [karawoo](https://github.com/karawoo), [kdaily](https://github.com/kdaily)
+- Contributors: [allaway](https://github.com/allaway), [duncan-palmer](https://github.com/duncan-palmer), [jkiang13](https://github.com/jkiang13), [karawoo](https://github.com/karawoo), [kdaily](https://github.com/kdaily), [vpchung](https://github.com/vpchung)
 
 ## Introduction
 
