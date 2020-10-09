@@ -2,8 +2,8 @@ Basic Shiny application for use on Sage Bionetwork's Synapse web portal.
 
 ## Credits
 
-- Author: [duncan-palmer](https://github.com/duncan-palmer)
-- Contributors: [kdaily](https://github.com/kdaily)
+- Maintainer: [thomasyu888](https://github.com/thomasyu888)
+- Contributors: [allaway](https://github.com/allaway), [duncan-palmer](https://github.com/duncan-palmer), [jkiang13](https://github.com/jkiang13), [karawoo](https://github.com/karawoo), [kdaily](https://github.com/kdaily), [vpchung](https://github.com/vpchung)
 
 ## Introduction
 
@@ -37,7 +37,7 @@ around this issue:
    could log in between when your `synLogin()` and `synGet()` are executed.
 1. Instead of using synapser, use the [Synapse Python client](https://python-docs.synapse.org/) + [reticulate](https://rstudio.github.io/reticulate/). The
    Python client allows for creating multiple client objects, and therefore
-   multiple authenticated users.
+   multiple authenticated users.  Please see the [reticulate branch](https://github.com/Sage-Bionetworks/SynapseShinyApp/tree/reticulate) for implementation details.
 
 ## Usage
 
