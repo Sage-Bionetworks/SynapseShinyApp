@@ -11,6 +11,7 @@
 
 library(shiny)
 library(reticulate)
+library(waiter)
 
 synapseclient <- import('synapseclient')
 
@@ -18,34 +19,42 @@ shinyServer(function(input, output, session) {
   syn <- synapseclient$Synapse()
 
   session$sendCustomMessage(type="readCookie", message=list())
+  observeEvent(input$cookie, {
 
-  ## Show message if user is not logged in to synapse
-  unauthorized <- observeEvent(input$authorized, {
-    showModal(
-      modalDialog(
-        title = "Not logged in",
-        HTML("You must log in to <a href=\"https://www.synapse.org/\">Synapse</a> to use this application. Please log in, and then refresh this page.")
+    ### login and update session; otherwise, notify to login to Synapse first
+    tryCatch({
+      syn$login(sessionToken = input$cookie, rememberMe = FALSE)
+
+      ### update waiter loading screen once login successful
+      waiter_update(
+        html = tagList(
+          img(src = "synapse_logo.png", height = "120px"),
+          h3(sprintf("Welcome, %s!", syn$getUserProfile()$userName))
+        )
       )
-    )
+      Sys.sleep(2)
+      waiter_hide()
+    }, error = function(err) {
+      Sys.sleep(2)
+      waiter_update(
+        html = tagList(
+          img(src = "synapse_logo.png", height = "120px"),
+          h3("Looks like you're not logged in!"),
+          span("Please ", a("login", href = "https://www.synapse.org/#!LoginPlace:0", target = "_blank"),
+               " to Synapse, then refresh this page.")
+        )
+      )
+    })
   })
 
-  foo <- observeEvent(input$cookie, {
+  output$distPlot <- renderPlot({
 
-    syn$login(sessionToken=input$cookie)
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
 
-    output$title <- renderUI({
-      titlePanel(sprintf("Welcome, %s", synGetUserProfile()$userName))
-    })
+    # draw the histogram with the specified number of bins
+    hist(x, breaks = bins, col = 'darkgray', border = 'white')
 
-    output$distPlot <- renderPlot({
-
-      # generate bins based on input$bins from ui.R
-      x    <- faithful[, 2]
-      bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-      # draw the histogram with the specified number of bins
-      hist(x, breaks = bins, col = 'darkgray', border = 'white')
-
-    })
   })
 })

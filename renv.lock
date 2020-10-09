@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.0.0",
+    "Version": "4.0.2",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -36,10 +36,10 @@
     },
     "Rcpp": {
       "Package": "Rcpp",
-      "Version": "1.0.4.6",
+      "Version": "1.0.5",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "7100120cbd08ac2fd5c2ec38155943fb"
+      "Hash": "b70d8cdf43de438cfeb0fabc95b80e2f"
     },
     "base64enc": {
       "Package": "base64enc",
@@ -78,10 +78,10 @@
     },
     "glue": {
       "Package": "glue",
-      "Version": "1.4.1",
+      "Version": "1.4.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "9a6df066d1f296f8954d2561d997acd8"
+      "Hash": "7f58a572011109ce2b0b59a577c00513"
     },
     "htmltools": {
       "Package": "htmltools",
@@ -99,10 +99,10 @@
     },
     "jsonlite": {
       "Package": "jsonlite",
-      "Version": "1.6.1",
+      "Version": "1.7.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "bac349bbe607b15680cc69a223d6f8da"
+      "Hash": "d3633d40971518106238bbfb6931ed12"
     },
     "later": {
       "Package": "later",
@@ -146,6 +146,13 @@
       "Repository": "CRAN",
       "Hash": "519a4f6ec4dd4e49fe1ad05bbec3ff4d"
     },
+    "renv": {
+      "Package": "renv",
+      "Version": "0.8.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "01a8155e7e808589765ec76738e78d4e"
+    },
     "reticulate": {
       "Package": "reticulate",
       "Version": "1.16",
@@ -155,10 +162,17 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "0.4.6",
+      "Version": "0.4.8",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "329f1c405cf8fc1f7703ca70678b1018"
+      "Hash": "4f23019046f441fa950ab3c16ab16ab4"
+    },
+    "rstudioapi": {
+      "Package": "rstudioapi",
+      "Version": "0.11",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "be1d49465d689f277ab9705212fd5c3e"
     },
     "shiny": {
       "Package": "shiny",
@@ -174,12 +188,19 @@
       "Repository": "CRAN",
       "Hash": "5db46e3373af605b3880ba40b00c88ef"
     },
-    "withr": {
-      "Package": "withr",
-      "Version": "2.2.0",
+    "waiter": {
+      "Package": "waiter",
+      "Version": "0.1.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "a3b93c33c994b629b2c4ddc71adba64b"
+      "Hash": "60d50ebc7a9f756f2bd52ae2b0fa3ecc"
+    },
+    "withr": {
+      "Package": "withr",
+      "Version": "2.3.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "104dd0cf620fe5d89a06888930f43972"
     },
     "xtable": {
       "Package": "xtable",
