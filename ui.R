@@ -11,6 +11,8 @@
 
 library(shiny)
 
+
+
 shinyUI(fluidPage(
 
   tags$head(
@@ -36,5 +38,13 @@ shinyUI(fluidPage(
     mainPanel(
       plotOutput("distPlot")
     )
+  ),
+  use_waiter(),
+  waiter_show_on_load(
+    html = tagList(
+      img(src = "loading.gif"),
+      h4("Retrieving Synapse information...")
+    ),
+    color = "#424874"
   )
 ))
