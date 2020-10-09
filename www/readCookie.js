@@ -1,4 +1,4 @@
-// read the user login token from a cookie (new protocol)
+// read the user login token from a cookie
 Shiny.addCustomMessageHandler("readCookie", function(message) {
     readCookie();
 });
