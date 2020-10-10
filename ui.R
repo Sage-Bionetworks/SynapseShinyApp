@@ -10,6 +10,7 @@
 # https://www.synapse.org
 
 library(shiny)
+library(waiter)
 
 shinyUI(fluidPage(
 
@@ -36,5 +37,15 @@ shinyUI(fluidPage(
     mainPanel(
       plotOutput("distPlot")
     )
+  ),
+  ## waiter loading screen
+  use_waiter(),
+  waiter_show_on_load(
+    html = tagList(
+      img(src = "loading.gif"),
+      h4("Retrieving Synapse information...")
+    ),
+    color = "#424874"
   )
+
 ))
