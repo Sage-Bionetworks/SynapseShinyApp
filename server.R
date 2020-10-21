@@ -19,6 +19,18 @@ shinyServer(function(input, output, session) {
   syn <- synapseclient$Synapse()
 
   session$sendCustomMessage(type="readCookie", message=list())
+
+  observeEvent(input$authorized, {
+    waiter_update(
+      html = tagList(
+        img(src = "synapse_logo.png", height = "120px"),
+        h3("Looks like you're not logged in!"),
+        span("Please ", a("login", href = "https://www.synapse.org/#!LoginPlace:0", target = "_blank"),
+             " to Synapse, then refresh this page.")
+      )
+    )
+  })
+
   observeEvent(input$cookie, {
 
     ### login and update session; otherwise, notify to login to Synapse first
