@@ -23,7 +23,7 @@ shinyServer(function(input, output, session) {
   observeEvent(input$cookie, {
 
     # If there's no session token, prompt user to log in
-    if (input$cookie == "") {
+    if (input$cookie == "unauthorized") {
       waiter_update(
         html = tagList(
           img(src = "synapse_logo.png", height = "120px"),
