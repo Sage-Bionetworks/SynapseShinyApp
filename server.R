@@ -18,22 +18,10 @@ library(waiter)
 shinyServer(function(input, output, session) {
   
   session$sendCustomMessage(type="readCookie", message=list())
+
   observeEvent(input$cookie, {
-    ### login and update session; otherwise, notify to login to Synapse first
-    tryCatch({
-      synLogin(sessionToken=input$cookie)
-      
-      ### update waiter loading screen once login successful
-      waiter_update(
-        html = tagList(
-          img(src = "synapse_logo.png", height = "120px"),
-          h3(sprintf("Welcome, %s!", synGetUserProfile()$userName))
-        )
-      )
-      Sys.sleep(2)
-      waiter_hide()
-    }, error = function(err) {
-      Sys.sleep(2)
+    # If there's no session token, prompt user to log in
+    if (input$cookie == "unauthorized") {
       waiter_update(
         html = tagList(
           img(src = "synapse_logo.png", height = "120px"),
@@ -42,7 +30,42 @@ shinyServer(function(input, output, session) {
                " to Synapse, then refresh this page.")
         )
       )
-    })
+    } else {
+      ### login and update session; otherwise, notify to login to Synapse first
+      tryCatch({
+        synLogin(sessionToken = input$cookie, rememberMe = FALSE)
+
+        ### update waiter loading screen once login successful
+        waiter_update(
+          html = tagList(
+            img(src = "synapse_logo.png", height = "120px"),
+            h3(sprintf("Welcome, %s!", synGetUserProfile()$userName))
+          )
+        )
+        Sys.sleep(2)
+        waiter_hide()
+      }, error = function(err) {
+        Sys.sleep(2)
+        waiter_update(
+          html = tagList(
+            img(src = "synapse_logo.png", height = "120px"),
+            h3("Login error"),
+            span(
+              "There was an error with the login process. Please refresh your Synapse session by logging out of and back in to",
+              a("Synapse", href = "https://www.synapse.org/", target = "_blank"),
+              ", then refresh this page."
+            )
+          )
+        )
+
+      })
+
+      # Any shiny app functionality that uses synapse should be within the
+      # input$cookie observer
+      output$title <- renderUI({
+        titlePanel(sprintf("Welcome, %s", synGetUserProfile()$userName))
+      })
+    }
   })
 
   output$distPlot <- renderPlot({
