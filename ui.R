@@ -10,40 +10,35 @@
 # https://www.synapse.org
 
 library(shiny)
-library(waiter)
 
-shinyUI(
-  fluidPage(
-    tags$head(tags$script(jscode)),
-    titlePanel("Synapse OAuth Demo"),
-    actionButton("action", "Log in to Synapse"),
-
-    # Application title
-    # uiOutput("title"),
-
-    # Sidebar with a slider input for number of bins
-    sidebarLayout(
-      sidebarPanel(
-        sliderInput("bins",
-                    "Number of bins:",
-                    min = 1,
-                    max = 50,
-                    value = 30)
-      ),
-
-      # Show a plot of the generated distribution
-      mainPanel(
-        plotOutput("distPlot")
-      )
+ui <- fluidPage(
+  # Application title
+  titlePanel("title"),
+  # Sidebar with a slider input for number of bins
+  sidebarLayout(
+    # Sidebar with a slider input
+    # Google chrome not showing sliders correctly
+    sidebarPanel(
+      sliderInput("obs",
+                  "Number of observations:",
+                  min = 0,
+                  max = 1000,
+                  value = 500)
     ),
-    # waiter loading screen
-    use_waiter()
-    # waiter_show_on_load(
-    #   html = tagList(
-    #     img(src = "loading.gif"),
-    #     h4("Retrieving Synapse information...")
-    #   ),
-    #   color = "#424874"
-    # )
+
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("distPlot")
+    )
   )
 )
+
+uiFunc <- function(req) {
+  if (!has_auth_code(parseQueryString(req$QUERY_STRING))) {
+    authorization_url = oauth2.0_authorize_url(api, app, scope = scope)
+    return(tags$script(HTML(sprintf("location.replace(\"%s\");",
+                                    authorization_url))))
+  } else {
+    ui
+  }
+}

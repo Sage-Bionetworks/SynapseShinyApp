@@ -11,34 +11,22 @@
 
 library(shiny)
 library(reticulate)
-library(waiter)
 
 reticulate::use_condaenv("synapse")
 synapseclient <- import('synapseclient')
 
 shinyServer(function(input, output, session) {
   syn <- synapseclient$Synapse()
-  # clicking on the 'Log in' button will kick off the OAuth round trip
-  observeEvent(input$action, {
-    session$sendCustomMessage("mymessage",
-                              oauth2.0_authorize_url(api, app, scope = scope))
-    return()
-  })
-  waiter_show(
-    html = tagList(
-      img(src = "loading.gif"),
-      h4("Retrieving Synapse information...")
-    ),
-    color = "#424874"
-  )
+
   params <- parseQueryString(isolate(session$clientData$url_search))
   if (!has_auth_code(params)) {
     return()
   }
-  url<-paste0(api$access, '?', 'redirect_uri=', APP_URL, '&grant_type=',
-              'authorization_code' ,'&code=', params$code)
+  redirect_url <- paste0(api$access, '?', 'redirect_uri=',
+                         APP_URL, '&grant_type=',
+                         'authorization_code' ,'&code=', params$code)
   # get the access_token and userinfo token
-  req <- POST(url,
+  req <- POST(redirect_url,
               encode = "form",
               body = '',
               authenticate(app$key, app$secret, type = "basic"),
@@ -47,24 +35,9 @@ shinyServer(function(input, output, session) {
   token_response <- content(req, type = NULL)
   access_token <- token_response$access_token
   syn$login(authToken=access_token)
-  print(access_token)
-  waiter_update(
-    html = tagList(
-      img(src = "synapse_logo.png", height = "120px"),
-      h3(sprintf("Welcome, %s!", syn$getUserProfile()$userName))
-    )
-  )
-  Sys.sleep(2)
-  waiter_hide()
 
   output$distPlot <- renderPlot({
-
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
-
+    hist(rnorm(input$obs))
   })
+
 })
