@@ -35,9 +35,9 @@ shinyUI(
       mainPanel(
         plotOutput("distPlot")
       )
-    )
+    ),
     # waiter loading screen
-    # use_waiter(),
+    use_waiter()
     # waiter_show_on_load(
     #   html = tagList(
     #     img(src = "loading.gif"),

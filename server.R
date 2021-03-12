@@ -22,16 +22,15 @@ shinyServer(function(input, output, session) {
   observeEvent(input$action, {
     session$sendCustomMessage("mymessage",
                               oauth2.0_authorize_url(api, app, scope = scope))
-    # waiter_show(
-    #   html = tagList(
-    #     img(src = "loading.gif"),
-    #     h4("Retrieving Synapse information...")
-    #   ),
-    #   color = "#424874"
-    # )
     return()
   })
-
+  waiter_show(
+    html = tagList(
+      img(src = "loading.gif"),
+      h4("Retrieving Synapse information...")
+    ),
+    color = "#424874"
+  )
   params <- parseQueryString(isolate(session$clientData$url_search))
   if (!has_auth_code(params)) {
     return()
@@ -55,6 +54,8 @@ shinyServer(function(input, output, session) {
       h3(sprintf("Welcome, %s!", syn$getUserProfile()$userName))
     )
   )
+  Sys.sleep(2)
+  waiter_hide()
 
   output$distPlot <- renderPlot({
 
