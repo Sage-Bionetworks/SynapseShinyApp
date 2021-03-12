@@ -11,7 +11,7 @@
 
 library(shiny)
 library(reticulate)
-# library(waiter)
+library(waiter)
 
 reticulate::use_condaenv("synapse")
 synapseclient <- import('synapseclient')
