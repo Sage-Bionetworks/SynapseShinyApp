@@ -3,7 +3,6 @@ library(httr)
 library(rjson)
 library(yaml)
 
-
 if (interactive()) {
   # testing url
   options(shiny.port = 8100)
@@ -61,5 +60,3 @@ api <- oauth_endpoint(
 
 # The 'openid' scope is required by the protocol for retrieving user information.
 scope <- "openid view download modify"
-
-
