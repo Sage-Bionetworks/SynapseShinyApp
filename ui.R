@@ -14,12 +14,16 @@ library(waiter)
 
 shinyUI(fluidPage(
 
-  tags$head(
-    singleton(
-      includeScript("www/readCookie.js")
-    )
-  ),
-  
+  # tags$head(
+  #   singleton(
+  #     includeScript("www/readCookie.js")
+  #   )
+  # ),
+    # login in button
+  tags$head(tags$script(jscode)),
+  # titlePanel("Synapse OAuth Demo"),
+  # actionButton("action", "Log in to Synapse"),
+
   # Application title
   uiOutput("title"),
 
@@ -38,7 +42,7 @@ shinyUI(fluidPage(
       plotOutput("distPlot")
     )
   ),
-  ## waiter loading screen
+  # waiter loading screen
   use_waiter(),
   waiter_show_on_load(
     html = tagList(
