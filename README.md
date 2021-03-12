@@ -48,6 +48,11 @@ source ./init_python_venv.sh
 
 Alternatively you can individually run the commands in the above file if you are not running in a bash compatible shell.
 
-## Authentication
+### Authentication (OAuth)
 
-In the reticulate variation of the application login is via a Synapse object instantiated within the scope of the Shiny session. This contrasts with the **synapser** version of application, where the shared global Synapse client necessitates other workarounds to avoiding shared login state.
+In the reticulate variation of the application login is via a Synapse object instantiated within the scope of the Shiny session. This contrasts with the **synapser** version of application, where the shared global Synapse client necessitates other workarounds to avoiding shared login state.  This also utilizes a Synapse Oauth client.  Each application is required to have its own Oauth client as these clients cannot be shared between one another.  View instructions [here](https://docs.synapse.org/articles/using_synapse_as_an_oauth_server.html) to learn how to request the client.  Once you obtain the `client_id` and `client_secret` make sure to:
+
+```
+cp example_config.yaml config.yaml
+chmod 400 config.yaml
+```
