@@ -1,3 +1,5 @@
+## Synapse Shiny App Template
+
 **This branch is meant to live separately to illustrate the reticulate alternative. It should not be merged**
 
 Basic Shiny application for use on Sage Bionetwork's Synapse web portal.
