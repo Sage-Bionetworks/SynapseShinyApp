@@ -13,7 +13,7 @@ library(shiny)
 library(reticulate)
 library(waiter)
 
-reticulate::use_condaenv("synapse")
+# reticulate::use_condaenv("synapse")
 synapseclient <- import('synapseclient')
 
 shinyServer(function(input, output, session) {
