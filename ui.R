@@ -12,44 +12,38 @@
 library(shiny)
 library(waiter)
 
-shinyUI(fluidPage(
+shinyUI(
+  fluidPage(
+    tags$head(tags$script(jscode)),
+    titlePanel("Synapse OAuth Demo"),
+    actionButton("action", "Log in to Synapse"),
 
-  # tags$head(
-  #   singleton(
-  #     includeScript("www/readCookie.js")
-  #   )
-  # ),
-    # login in button
-  tags$head(tags$script(jscode)),
-  # titlePanel("Synapse OAuth Demo"),
-  # actionButton("action", "Log in to Synapse"),
+    # Application title
+    # uiOutput("title"),
 
-  # Application title
-  uiOutput("title"),
+    # Sidebar with a slider input for number of bins
+    sidebarLayout(
+      sidebarPanel(
+        sliderInput("bins",
+                    "Number of bins:",
+                    min = 1,
+                    max = 50,
+                    value = 30)
+      ),
 
-  # Sidebar with a slider input for number of bins
-  sidebarLayout(
-    sidebarPanel(
-      sliderInput("bins",
-                  "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
-    ),
-
-    # Show a plot of the generated distribution
-    mainPanel(
-      plotOutput("distPlot")
+      # Show a plot of the generated distribution
+      mainPanel(
+        plotOutput("distPlot")
+      )
     )
-  ),
-  # waiter loading screen
-  use_waiter(),
-  waiter_show_on_load(
-    html = tagList(
-      img(src = "loading.gif"),
-      h4("Retrieving Synapse information...")
-    ),
-    color = "#424874"
+    # waiter loading screen
+    # use_waiter(),
+    # waiter_show_on_load(
+    #   html = tagList(
+    #     img(src = "loading.gif"),
+    #     h4("Retrieving Synapse information...")
+    #   ),
+    #   color = "#424874"
+    # )
   )
-
-))
+)
