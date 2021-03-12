@@ -22,7 +22,7 @@ has_auth_code <- function(params) {
 
 oauth_client = yaml.load_file("config.yaml")
 
-client_id <- oauth_client$client_id
+client_id <- toString(oauth_client$client_id)
 client_secret <- oauth_client$client_secret
 if (is.null(client_id)) stop("config.yaml is missing client_id")
 if (is.null(client_secret)) stop("config.yaml is missing client_secret")

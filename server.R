@@ -11,6 +11,7 @@
 
 library(shiny)
 library(reticulate)
+# library(waiter)
 
 reticulate::use_condaenv("synapse")
 synapseclient <- import('synapseclient')
@@ -35,6 +36,14 @@ shinyServer(function(input, output, session) {
   token_response <- content(req, type = NULL)
   access_token <- token_response$access_token
   syn$login(authToken=access_token)
+  waiter_update(
+    html = tagList(
+      img(src = "synapse_logo.png", height = "120px"),
+      h3(sprintf("Welcome, %s!", syn$getUserProfile()$userName))
+    )
+  )
+  Sys.sleep(2)
+  waiter_hide()
 
   output$distPlot <- renderPlot({
     hist(rnorm(input$obs))
