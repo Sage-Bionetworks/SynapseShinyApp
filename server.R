@@ -13,6 +13,7 @@ library(shiny)
 library(reticulate)
 library(waiter)
 
+# Don't necessarily have to set `RETICULATE_PYTHON` env variable
 # reticulate::use_condaenv("synapse")
 synapseclient <- import('synapseclient')
 
@@ -32,6 +33,7 @@ shinyServer(function(input, output, session) {
               body = '',
               authenticate(app$key, app$secret, type = "basic"),
               config = list())
+  # Stop the code if anything other than 2XX status code is returned
   stop_for_status(req, task = "get an access token")
   token_response <- content(req, type = NULL)
   access_token <- token_response$access_token
