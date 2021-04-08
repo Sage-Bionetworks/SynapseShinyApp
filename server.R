@@ -18,7 +18,6 @@ library(waiter)
 synapseclient <- import('synapseclient')
 
 shinyServer(function(input, output, session) {
-  syn <- synapseclient$Synapse()
 
   params <- parseQueryString(isolate(session$clientData$url_search))
   if (!has_auth_code(params)) {
@@ -37,6 +36,8 @@ shinyServer(function(input, output, session) {
   stop_for_status(req, task = "get an access token")
   token_response <- content(req, type = NULL)
   access_token <- token_response$access_token
+  # Create Synapse connection
+  syn <- synapseclient$Synapse()
   syn$login(authToken=access_token)
   waiter_update(
     html = tagList(
