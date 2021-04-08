@@ -8,7 +8,7 @@ if (interactive()) {
   options(shiny.port = 8100)
   APP_URL <- "http://127.0.0.1:8100"
 } else {
-  # deployed URL
+  # TODO: This has to be updated per application
   APP_URL <- "https://servername/path-to-app"
 }
 
