@@ -55,9 +55,8 @@ Alternatively you can individually run the commands in the above file if you are
 Alternatively, if you do not want to use `pyenv`, you can can ignore the [Python dependencies](#python-dependencies) section above and create a conda environment.  [Get anaconda]([anaconda](https://www.anaconda.com/products/individual))  Once installed on your machine:
 
 ```
-conda create -n synapse python=3.8
+conda create -n synapse -f environment.yml
 conda activate synapse
-pip install synapseclient
 ```
 
 Make sure you add in your `server.R`:
