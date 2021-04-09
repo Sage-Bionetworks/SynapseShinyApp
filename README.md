@@ -1,3 +1,5 @@
+## Synapse Shiny App Template
+
 **This branch is meant to live separately to illustrate the reticulate alternative. It should not be merged**
 
 Basic Shiny application for use on Sage Bionetwork's Synapse web portal.
@@ -48,6 +50,28 @@ source ./init_python_venv.sh
 
 Alternatively you can individually run the commands in the above file if you are not running in a bash compatible shell.
 
-## Authentication
+### conda
 
-In the reticulate variation of the application login is via a Synapse object instantiated within the scope of the Shiny session. This contrasts with the **synapser** version of application, where the shared global Synapse client necessitates other workarounds to avoiding shared login state.
+Alternatively, if you do not want to use `pyenv`, you can can ignore the [Python dependencies](#python-dependencies) section above and create a conda environment.  [Get anaconda]([anaconda](https://www.anaconda.com/products/individual))  Once installed on your machine:
+
+```
+conda create -n synapse -f environment.yml
+conda activate synapse
+```
+
+Make sure you add in your `server.R`:
+
+```
+reticulate::use_condaenv("synapse")
+```
+
+
+### Authentication (OAuth)
+
+In the reticulate variation of the application login is via a Synapse object instantiated within the scope of the Shiny session. This contrasts with the **synapser** version of application, where the shared global Synapse client necessitates other workarounds to avoiding shared login state.  This also utilizes a Synapse OAuth client (code motivated by [ShinyOAuthExample](https://github.com/brucehoff/ShinyOAuthExample) and [app.R](https://gist.github.com/jcheng5/44bd750764713b5a1df7d9daf5538aea).  Each application is required to have its own OAuth client as these clients cannot be shared between one another.  View instructions [here](https://docs.synapse.org/articles/using_synapse_as_an_oauth_server.html) to learn how to request a client.  Once you obtain the `client_id` and `client_secret` make sure to add it to the configuration file.
+
+```
+cp example_config.yaml config.yaml
+# Edit config.yaml
+chmod 400 config.yaml
+```

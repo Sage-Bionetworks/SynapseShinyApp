@@ -13,70 +13,43 @@ library(shiny)
 library(reticulate)
 library(waiter)
 
+# Don't necessarily have to set `RETICULATE_PYTHON` env variable
+# reticulate::use_condaenv("synapse")
 synapseclient <- import('synapseclient')
 
 shinyServer(function(input, output, session) {
+
+  params <- parseQueryString(isolate(session$clientData$url_search))
+  if (!has_auth_code(params)) {
+    return()
+  }
+  redirect_url <- paste0(api$access, '?', 'redirect_uri=',
+                         APP_URL, '&grant_type=',
+                         'authorization_code' ,'&code=', params$code)
+  # get the access_token and userinfo token
+  req <- POST(redirect_url,
+              encode = "form",
+              body = '',
+              authenticate(app$key, app$secret, type = "basic"),
+              config = list())
+  # Stop the code if anything other than 2XX status code is returned
+  stop_for_status(req, task = "get an access token")
+  token_response <- content(req, type = NULL)
+  access_token <- token_response$access_token
+  # Create Synapse connection
   syn <- synapseclient$Synapse()
-
-  session$sendCustomMessage(type="readCookie", message=list())
-
-  observeEvent(input$cookie, {
-
-    # If there's no session token, prompt user to log in
-    if (input$cookie == "unauthorized") {
-      waiter_update(
-        html = tagList(
-          img(src = "synapse_logo.png", height = "120px"),
-          h3("Looks like you're not logged in!"),
-          span("Please ", a("login", href = "https://www.synapse.org/#!LoginPlace:0", target = "_blank"),
-               " to Synapse, then refresh this page.")
-        )
-      )
-    } else {
-      ### login and update session; otherwise, notify to login to Synapse first
-      tryCatch({
-        syn$login(sessionToken = input$cookie, rememberMe = FALSE)
-
-        ### update waiter loading screen once login successful
-        waiter_update(
-          html = tagList(
-            img(src = "synapse_logo.png", height = "120px"),
-            h3(sprintf("Welcome, %s!", syn$getUserProfile()$userName))
-          )
-        )
-        Sys.sleep(2)
-        waiter_hide()
-      }, error = function(err) {
-        Sys.sleep(2)
-        waiter_update(
-          html = tagList(
-            img(src = "synapse_logo.png", height = "120px"),
-            h3("Login error"),
-            span(
-              "There was an error with the login process. Please refresh your Synapse session by logging out of and back in to",
-              a("Synapse", href = "https://www.synapse.org/", target = "_blank"),
-              ", then refresh this page."
-            )
-          )
-        )
-      })
-
-      # Any shiny app functionality that uses synapse should be within the
-      # input$cookie observer
-      output$title <- renderUI({
-        titlePanel(sprintf("Welcome, %s", syn$getUserProfile()$userName))
-      })
-    }
-  })
+  syn$login(authToken=access_token)
+  waiter_update(
+    html = tagList(
+      img(src = "synapse_logo.png", height = "120px"),
+      h3(sprintf("Welcome, %s!", syn$getUserProfile()$userName))
+    )
+  )
+  Sys.sleep(2)
+  waiter_hide()
 
   output$distPlot <- renderPlot({
-
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
-
+    hist(rnorm(input$obs))
   })
+
 })

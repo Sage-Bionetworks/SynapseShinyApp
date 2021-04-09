@@ -12,25 +12,19 @@
 library(shiny)
 library(waiter)
 
-shinyUI(fluidPage(
-
-  tags$head(
-    singleton(
-      includeScript("www/readCookie.js")
-    )
-  ),
-  
+ui <- fluidPage(
   # Application title
-  uiOutput("title"),
-
+  titlePanel("title"),
   # Sidebar with a slider input for number of bins
   sidebarLayout(
+    # Sidebar with a slider input
+    # Google chrome not showing sliders correctly
     sidebarPanel(
-      sliderInput("bins",
-                  "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
+      sliderInput("obs",
+                  "Number of observations:",
+                  min = 0,
+                  max = 1000,
+                  value = 500)
     ),
 
     # Show a plot of the generated distribution
@@ -38,7 +32,6 @@ shinyUI(fluidPage(
       plotOutput("distPlot")
     )
   ),
-  ## waiter loading screen
   use_waiter(),
   waiter_show_on_load(
     html = tagList(
@@ -47,5 +40,14 @@ shinyUI(fluidPage(
     ),
     color = "#424874"
   )
+)
 
-))
+uiFunc <- function(req) {
+  if (!has_auth_code(parseQueryString(req$QUERY_STRING))) {
+    authorization_url = oauth2.0_authorize_url(api, app, scope = scope)
+    return(tags$script(HTML(sprintf("location.replace(\"%s\");",
+                                    authorization_url))))
+  } else {
+    ui
+  }
+}
