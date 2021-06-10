@@ -1,4 +1,4 @@
-Basic Shiny application for use on Sage Bionetwork's Synapse web portal.
+Basic Shiny application for use on Sage Bionetworks' Synapse web portal.
 
 ## Credits
 
