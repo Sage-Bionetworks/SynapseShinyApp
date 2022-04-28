@@ -38,7 +38,8 @@ around this issue:
 1. Instead of using synapser, use the [Synapse Python client](https://python-docs.synapse.org/) + [reticulate](https://rstudio.github.io/reticulate/). The
    Python client allows for creating multiple client objects, and therefore
    multiple authenticated users.  Please see the [reticulate branch](https://github.com/Sage-Bionetworks/SynapseShinyApp/tree/reticulate) for implementation details.
-
+      - :warning: It is important to avoid using the synapseclient.login() command without arguments, in other words, explicitly pass authToken to this function. Otherwise you will risk logging in as a user specified in .synapseConfig or .synapseSession instead of the app user.  
+ 
 ## Usage
 
 To create a new Shiny application based on this structure, do *not* fork this repository directly on GitHub. Instead, please use GitHub's importer following the instructions [below](#creating-a-repository).
